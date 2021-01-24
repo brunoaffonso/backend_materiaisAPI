@@ -27,6 +27,19 @@ export async function selectUnidade() {
   return rows;
 }
 
+export async function updateUnidade(id, name) {
+  const conn = await connect();
+  const sql = 'UPDATE unidade SET name=? WHERE id=?';
+  const values = [name, id];
+  return await conn.query(sql, values);
+}
+
+export async function deleteUnidade(id) {
+  const conn = await connect();
+  const sql = 'DELETE FROM unidade WHERE id=?';
+  return await conn.query(sql, [id]);
+}
+
 const res = async () => {
   console.log(await selectUnidade());
 };
