@@ -1,0 +1,13 @@
+{
+  "name": "backendMateriaisTelecomAPI",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/brunoaffonso/backend_materiaisAPI.git",
+  "author": "Bruno Affonso Teixeira <brunoaffonso@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5"
+  },
+  "type": "module"
+}
