@@ -1,12 +1,12 @@
 import express from 'express';
-import unidadeRouter from './routes/unidade';
-import departamentoRouter from './routes/departamento';
-import setorRouter from './routes/setor';
-import contratoRouter from './routes/contrato';
-import materialRouter from './routes/material';
-import estoqueRouter from './routes/estoque';
-import servicoRouter from './routes/servico';
-import matservRouter from './routes/matServ';
+import unidadeRouter from './routes/unidade.js';
+import departamentoRouter from './routes/departamento.js';
+import setorRouter from './routes/setor.js';
+import contratoRouter from './routes/contrato.js';
+import materialRouter from './routes/material.js';
+import estoqueRouter from './routes/estoque.js';
+import servicoRouter from './routes/servico.js';
+import matservRouter from './routes/matServ.js';
 
 // import * as db from './db';
 
