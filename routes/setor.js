@@ -63,11 +63,11 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.patch('/:id/:name/:departamento', async (req, res) => {
+router.post('/:id', async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const name = req.params.name;
-    const departamento = parseInt(req.params.departamento);
+    const name = req.body.name;
+    const departamento = parseInt(req.body.departamento);
     const rows = await updateSetor(id, name, departamento);
     res.send(rows);
   } catch (err) {

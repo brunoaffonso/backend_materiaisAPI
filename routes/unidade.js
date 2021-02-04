@@ -62,10 +62,10 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.patch('/:id/:name', async (req, res) => {
+router.post('/:id', async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const name = req.params.name;
+    const name = req.body.name;
     const rows = await updateUnidade(id, name);
     res.send(rows);
   } catch (err) {

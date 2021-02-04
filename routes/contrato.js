@@ -97,34 +97,31 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.patch(
-  '/:id/:numero/:ano/:renovacao/:inicio/:fim/:bdi/:descricao',
-  async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const numero = parseInt(req.params.numero);
-      const ano = parseInt(req.params.ano);
-      const renovacao = req.params.renovacao;
-      const inicio = req.params.inicio;
-      const fim = req.params.fim;
-      const bdi = req.params.bdi;
-      const descricao = req.params.descricao;
-      const rows = await updateContrato(
-        id,
-        numero,
-        ano,
-        renovacao,
-        inicio,
-        fim,
-        bdi,
-        descricao
-      );
-      res.send(rows);
-    } catch (err) {
-      console.log(err);
-      res.send(err);
-    }
+router.post('/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const numero = parseInt(req.body.numero);
+    const ano = parseInt(req.body.ano);
+    const renovacao = req.body.renovacao;
+    const inicio = req.body.inicio;
+    const fim = req.body.fim;
+    const bdi = req.body.bdi;
+    const descricao = req.body.descricao;
+    const rows = await updateContrato(
+      id,
+      numero,
+      ano,
+      renovacao,
+      inicio,
+      fim,
+      bdi,
+      descricao
+    );
+    res.send(rows);
+  } catch (err) {
+    console.log(err);
+    res.send(err);
   }
-);
+});
 
 export default router;

@@ -64,11 +64,11 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.patch('/:id/:name/:unidade', async (req, res) => {
+router.post('/:id', async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const name = req.params.name;
-    const unidade = parseInt(req.params.unidade);
+    const name = req.body.name;
+    const unidade = parseInt(req.body.unidade);
     const rows = await updateDepartamento(id, name, unidade);
     res.send(rows);
   } catch (err) {
