@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import unidadeRouter from './routes/unidade.js';
 import departamentoRouter from './routes/departamento.js';
 import setorRouter from './routes/setor.js';
@@ -14,6 +15,7 @@ const app = express();
 const port = 3001;
 
 app.use(express.json());
+app.use(cors());
 app.use('/unidade', unidadeRouter);
 app.use('/departamento', departamentoRouter);
 app.use('/setor', setorRouter);
