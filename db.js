@@ -5,7 +5,7 @@ export async function connect() {
     return global.connection;
 
   const connection = await mysql.createConnection(
-    'mysql://api:123456@localhost:3306/db_materiais'
+    'mysql://netiot69_api:ehsDyrk8235eAUGd@192.185.211.159:3306/netiot69_materiais'
   );
   console.log('Connected');
   global.connection = connection;
