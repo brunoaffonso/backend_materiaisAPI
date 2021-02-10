@@ -15,9 +15,60 @@ DROP SCHEMA IF EXISTS `db_materiais` ;
 CREATE SCHEMA IF NOT EXISTS `db_materiais` ;
 
 -- ----------------------------------------------------------------------------
+-- Table db_materiais.unidade
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `unidade` (
+  `id_unidade` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(30) NOT NULL,
+  PRIMARY KEY (`id_unidade`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 43
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- ----------------------------------------------------------------------------
+-- Table db_materiais.departamento
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `departamento` (
+  `id_departamento` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(30) NOT NULL,
+  `unidade` INT NOT NULL,
+  PRIMARY KEY (`id_departamento`),
+  INDEX `departamento_ibfk_1` (`unidade` ASC) VISIBLE,
+  CONSTRAINT `departamento_ibfk_1`
+    FOREIGN KEY (`unidade`)
+    REFERENCES `unidade` (`id_unidade`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
+ENGINE = InnoDB
+AUTO_INCREMENT = 4
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+-- ----------------------------------------------------------------------------
+-- Table db_materiais.setor
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `setor` (
+  `id_setor` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(30) NOT NULL,
+  `departamento` INT NOT NULL,
+  PRIMARY KEY (`id_setor`),
+  INDEX `setor_ibfk_1` (`departamento` ASC) VISIBLE,
+  CONSTRAINT `setor_ibfk_1`
+    FOREIGN KEY (`departamento`)
+    REFERENCES `departamento` (`id_departamento`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
+ENGINE = InnoDB
+AUTO_INCREMENT = 5
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+-- ----------------------------------------------------------------------------
 -- Table db_materiais.contrato
 -- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_materiais`.`contrato` (
+CREATE TABLE IF NOT EXISTS `contrato` (
   `id_contrato` INT NOT NULL AUTO_INCREMENT,
   `numero` INT NOT NULL,
   `ano` INT NOT NULL,
@@ -33,28 +84,25 @@ DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 -- ----------------------------------------------------------------------------
--- Table db_materiais.departamento
+-- Table db_materiais.material
 -- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_materiais`.`departamento` (
-  `id_departamento` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(30) NOT NULL,
-  `unidade` INT NOT NULL,
-  PRIMARY KEY (`id_departamento`),
-  INDEX `departamento_ibfk_1` (`unidade` ASC) VISIBLE,
-  CONSTRAINT `departamento_ibfk_1`
-    FOREIGN KEY (`unidade`)
-    REFERENCES `db_materiais`.`unidade` (`id_unidade`)
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+CREATE TABLE IF NOT EXISTS `material` (
+  `id_material` INT NOT NULL AUTO_INCREMENT,
+  `numero_item` INT NOT NULL,
+  `descricao` VARCHAR(255) NOT NULL,
+  `quantidade_ano` INT NOT NULL,
+  `tipo_unidade` VARCHAR(1) NOT NULL,
+  `valor` DECIMAL(10,2) NOT NULL,
+  `comentarios` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_material`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 -- ----------------------------------------------------------------------------
 -- Table db_materiais.estoque
 -- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_materiais`.`estoque` (
+CREATE TABLE IF NOT EXISTS `estoque` (
   `id_estoque` INT NOT NULL AUTO_INCREMENT,
   `material` INT NULL DEFAULT NULL,
   `fabricante` VARCHAR(50) NOT NULL,
@@ -71,45 +119,7 @@ CREATE TABLE IF NOT EXISTS `db_materiais`.`estoque` (
   INDEX `material` (`material` ASC) VISIBLE,
   CONSTRAINT `estoque_ibfk_1`
     FOREIGN KEY (`material`)
-    REFERENCES `db_materiais`.`material` (`id_material`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
--- ----------------------------------------------------------------------------
--- Table db_materiais.mat_serv
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_materiais`.`mat_serv` (
-  `id_mat_serv` INT NOT NULL AUTO_INCREMENT,
-  `numero_rs` INT NOT NULL,
-  `material` INT NOT NULL,
-  `quantidade` INT NOT NULL,
-  `comentarios` VARCHAR(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`id_mat_serv`),
-  INDEX `numero_rs` (`numero_rs` ASC) VISIBLE,
-  INDEX `material` (`material` ASC) VISIBLE,
-  CONSTRAINT `mat_serv_ibfk_1`
-    FOREIGN KEY (`numero_rs`)
-    REFERENCES `db_materiais`.`servico` (`id_servico`),
-  CONSTRAINT `mat_serv_ibfk_2`
-    FOREIGN KEY (`material`)
-    REFERENCES `db_materiais`.`material` (`id_material`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
--- ----------------------------------------------------------------------------
--- Table db_materiais.material
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_materiais`.`material` (
-  `id_material` INT NOT NULL AUTO_INCREMENT,
-  `numero_item` INT NOT NULL,
-  `descricao` VARCHAR(255) NOT NULL,
-  `quantidade_ano` INT NOT NULL,
-  `tipo_unidade` VARCHAR(1) NOT NULL,
-  `valor` DECIMAL(10,2) NOT NULL,
-  `comentarios` VARCHAR(100) NULL DEFAULT NULL,
-  PRIMARY KEY (`id_material`))
+    REFERENCES `material` (`id_material`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -117,7 +127,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- ----------------------------------------------------------------------------
 -- Table db_materiais.servico
 -- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_materiais`.`servico` (
+CREATE TABLE IF NOT EXISTS `servico` (
   `id_servico` INT NOT NULL AUTO_INCREMENT,
   `numero_rs` INT NULL DEFAULT NULL,
   `numero_os` INT NULL DEFAULT NULL,
@@ -134,45 +144,35 @@ CREATE TABLE IF NOT EXISTS `db_materiais`.`servico` (
   INDEX `setor` (`setor` ASC) VISIBLE,
   CONSTRAINT `servico_ibfk_1`
     FOREIGN KEY (`unidade`)
-    REFERENCES `db_materiais`.`unidade` (`id_unidade`),
+    REFERENCES `unidade` (`id_unidade`),
   CONSTRAINT `servico_ibfk_2`
     FOREIGN KEY (`departamento`)
-    REFERENCES `db_materiais`.`departamento` (`id_departamento`),
+    REFERENCES `departamento` (`id_departamento`),
   CONSTRAINT `servico_ibfk_3`
     FOREIGN KEY (`setor`)
-    REFERENCES `db_materiais`.`setor` (`id_setor`))
+    REFERENCES `setor` (`id_setor`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 -- ----------------------------------------------------------------------------
--- Table db_materiais.setor
+-- Table db_materiais.mat_serv
 -- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_materiais`.`setor` (
-  `id_setor` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(30) NOT NULL,
-  `departamento` INT NOT NULL,
-  PRIMARY KEY (`id_setor`),
-  INDEX `setor_ibfk_1` (`departamento` ASC) VISIBLE,
-  CONSTRAINT `setor_ibfk_1`
-    FOREIGN KEY (`departamento`)
-    REFERENCES `db_materiais`.`departamento` (`id_departamento`)
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
+CREATE TABLE IF NOT EXISTS `mat_serv` (
+  `id_mat_serv` INT NOT NULL AUTO_INCREMENT,
+  `numero_rs` INT NOT NULL,
+  `material` INT NOT NULL,
+  `quantidade` INT NOT NULL,
+  `comentarios` VARCHAR(255) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_mat_serv`),
+  INDEX `numero_rs` (`numero_rs` ASC) VISIBLE,
+  INDEX `material` (`material` ASC) VISIBLE,
+  CONSTRAINT `mat_serv_ibfk_1`
+    FOREIGN KEY (`numero_rs`)
+    REFERENCES `servico` (`id_servico`),
+  CONSTRAINT `mat_serv_ibfk_2`
+    FOREIGN KEY (`material`)
+    REFERENCES `material` (`id_material`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
-
--- ----------------------------------------------------------------------------
--- Table db_materiais.unidade
--- ----------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_materiais`.`unidade` (
-  `id_unidade` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(30) NOT NULL,
-  PRIMARY KEY (`id_unidade`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 43
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-SET FOREIGN_KEY_CHECKS = 1;

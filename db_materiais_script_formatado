@@ -1,0 +1,136 @@
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP SCHEMA IF EXISTS `db_materiais` ;
+CREATE SCHEMA IF NOT EXISTS `db_materiais` ;
+
+CREATE TABLE IF NOT EXISTS `unidade` (
+  `id_unidade` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(30) NOT NULL,
+  PRIMARY KEY (`id_unidade`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 43
+DEFAULT CHARACTER SET = utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `departamento` (
+  `id_departamento` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(30) NOT NULL,
+  `unidade` INT NOT NULL,
+  PRIMARY KEY (`id_departamento`),
+  INDEX `departamento_ibfk_1` (`unidade` ASC),
+  CONSTRAINT `departamento_ibfk_1`
+    FOREIGN KEY (`unidade`)
+    REFERENCES `unidade` (`id_unidade`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
+ENGINE = InnoDB
+AUTO_INCREMENT = 4
+DEFAULT CHARACTER SET = utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `setor` (
+  `id_setor` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(30) NOT NULL,
+  `departamento` INT NOT NULL,
+  PRIMARY KEY (`id_setor`),
+  INDEX `setor_ibfk_1` (`departamento` ASC),
+  CONSTRAINT `setor_ibfk_1`
+    FOREIGN KEY (`departamento`)
+    REFERENCES `departamento` (`id_departamento`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
+ENGINE = InnoDB
+AUTO_INCREMENT = 5
+DEFAULT CHARACTER SET = utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `contrato` (
+  `id_contrato` INT NOT NULL AUTO_INCREMENT,
+  `numero` INT NOT NULL,
+  `ano` INT NOT NULL,
+  `renovacao` VARCHAR(1) NOT NULL,
+  `inicio` DATE NOT NULL,
+  `fim` DATE NOT NULL,
+  `bdi` DECIMAL(6,2) NOT NULL,
+  `descricao` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id_contrato`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `material` (
+  `id_material` INT NOT NULL AUTO_INCREMENT,
+  `numero_item` INT NOT NULL,
+  `descricao` VARCHAR(255) NOT NULL,
+  `quantidade_ano` INT NOT NULL,
+  `tipo_unidade` VARCHAR(1) NOT NULL,
+  `valor` DECIMAL(10,2) NOT NULL,
+  `comentarios` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_material`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `estoque` (
+  `id_estoque` INT NOT NULL AUTO_INCREMENT,
+  `material` INT NULL DEFAULT NULL,
+  `fabricante` VARCHAR(50) NOT NULL,
+  `modelo` VARCHAR(100) NOT NULL,
+  `numero_serie` VARCHAR(50) NULL DEFAULT NULL,
+  `desenho` VARCHAR(50) NULL DEFAULT NULL,
+  `data_entrada` DATETIME NOT NULL,
+  `data_saida` DATETIME NULL DEFAULT NULL,
+  `localizacao` VARCHAR(100) NOT NULL,
+  `responsavel_retirada` VARCHAR(50) NOT NULL,
+  `info` VARCHAR(255) NOT NULL,
+  `em_estoque` TINYINT NOT NULL,
+  PRIMARY KEY (`id_estoque`),
+  INDEX `material` (`material` ASC),
+  CONSTRAINT `estoque_ibfk_1`
+    FOREIGN KEY (`material`)
+    REFERENCES `material` (`id_material`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `servico` (
+  `id_servico` INT NOT NULL AUTO_INCREMENT,
+  `numero_rs` INT NULL DEFAULT NULL,
+  `numero_os` INT NULL DEFAULT NULL,
+  `data_abertura` DATE NOT NULL,
+  `data_fechamento` DATE NOT NULL,
+  `unidade` INT NOT NULL,
+  `departamento` INT NOT NULL,
+  `setor` INT NULL DEFAULT NULL,
+  `obs` VARCHAR(255) NULL DEFAULT NULL,
+  `custo` DECIMAL(10,2) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_servico`),
+  INDEX `unidade` (`unidade` ASC),
+  INDEX `departamento` (`departamento` ASC),
+  INDEX `setor` (`setor` ASC),
+  CONSTRAINT `servico_ibfk_1`
+    FOREIGN KEY (`unidade`)
+    REFERENCES `unidade` (`id_unidade`),
+  CONSTRAINT `servico_ibfk_2`
+    FOREIGN KEY (`departamento`)
+    REFERENCES `departamento` (`id_departamento`),
+  CONSTRAINT `servico_ibfk_3`
+    FOREIGN KEY (`setor`)
+    REFERENCES `setor` (`id_setor`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `mat_serv` (
+  `id_mat_serv` INT NOT NULL AUTO_INCREMENT,
+  `numero_rs` INT NOT NULL,
+  `material` INT NOT NULL,
+  `quantidade` INT NOT NULL,
+  `comentarios` VARCHAR(255) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_mat_serv`),
+  INDEX `numero_rs` (`numero_rs` ASC),
+  INDEX `material` (`material` ASC),
+  CONSTRAINT `mat_serv_ibfk_1`
+    FOREIGN KEY (`numero_rs`)
+    REFERENCES `servico` (`id_servico`),
+  CONSTRAINT `mat_serv_ibfk_2`
+    FOREIGN KEY (`material`)
+    REFERENCES `material` (`id_material`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+SET FOREIGN_KEY_CHECKS = 1;
