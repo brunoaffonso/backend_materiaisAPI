@@ -1,11 +1,12 @@
 import mysql from 'mysql2/promise';
+import { user, pass, ip, port, db } from './dbAccess.js';
 
 export async function connect() {
   if (global.connection && global.connection.state !== 'disconnected')
     return global.connection;
 
   const connection = await mysql.createConnection(
-    'mysql://netiot69_api:ehsDyrk8235eAUGd@192.185.211.159:3306/netiot69_materiais'
+    `mysql://${user}:${pass}@${ip}:${port}/${db}`
   );
   console.log('Connected');
   global.connection = connection;
