@@ -108,14 +108,6 @@ router.post('/', async function (req, res) {
     );
     const id = JSON.stringify(rows.insertId);
     res.send(id);
-    console.log([
-      numero_item,
-      descricao,
-      quantidade_ano,
-      tipo_unidade,
-      valor,
-      comentarios,
-    ]);
   } catch (err) {
     console.log(err);
     res.send(err);
