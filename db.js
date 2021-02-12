@@ -1,16 +1,27 @@
 import mysql from 'mysql2/promise';
 import { user, pass, ip, port, db } from './dbAccess.js';
 
-export async function connect() {
-  if (global.connection && global.connection.state !== 'disconnected')
-    return global.connection;
-
+async function connectDb() {
   const connection = await mysql.createConnection(
     `mysql://${user}:${pass}@${ip}:${port}/${db}`
   );
-  console.log('Connected');
   global.connection = connection;
   return connection;
+}
+
+export async function connect() {
+  if (global.connection && global.connection.state !== 'disconnected') {
+    console.log('OK');
+    // return connectDb();
+    return global.connection;
+  }
+
+  console.log('Connected');
+  return connectDb();
+}
+
+export async function close() {
+  global.connection.destroy();
 }
 
 // connect();
