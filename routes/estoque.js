@@ -14,11 +14,12 @@ async function insertEstoque(
   localizacao,
   responsavel_retirada,
   info,
-  em_estoque
+  em_estoque,
+  quantidade
 ) {
   const conn = await connect();
   const sql =
-    'INSERT INTO estoque(material, fabricante, modelo, numero_serie, desenho, data_entrada, data_saida, localizacao, responsavel_retirada, info, em_estoque) VALUES (?,?,?,?,?,?,?,?,?,?,?);';
+    'INSERT INTO estoque(material, fabricante, modelo, numero_serie, desenho, data_entrada, data_saida, localizacao, responsavel_retirada, info, em_estoque, quantidade) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);';
   const values = [
     material,
     fabricante,
@@ -31,6 +32,7 @@ async function insertEstoque(
     responsavel_retirada,
     info,
     em_estoque,
+    quantidade,
   ];
   return await conn.query(sql, values);
 }
@@ -60,11 +62,12 @@ async function updateEstoque(
   responsavel_retirada,
   info,
   em_estoque,
+  quantidade,
   id
 ) {
   const conn = await connect();
   const sql =
-    'UPDATE estoque SET material=?, fabricante=?, modelo=?, numero_serie=?, desenho=?, data_entrada=?, data_saida=?, localizacao=?, responsavel_retirada=?, info=?, em_estoque=? WHERE id_estoque=?';
+    'UPDATE estoque SET material=?, fabricante=?, modelo=?, numero_serie=?, desenho=?, data_entrada=?, data_saida=?, localizacao=?, responsavel_retirada=?, info=?, em_estoque=?, quantidade=? WHERE id_estoque=?';
   const values = [
     material,
     fabricante,
@@ -77,6 +80,7 @@ async function updateEstoque(
     responsavel_retirada,
     info,
     em_estoque,
+    quantidade,
     id,
   ];
   return await conn.query(sql, values);
@@ -105,6 +109,7 @@ router.post('/', async function (req, res) {
     const responsavel_retirada = req.body.responsavel_retirada;
     const info = req.body.info;
     const em_estoque = parseInt(req.body.em_estoque);
+    const quantidade = req.body.quantidade;
     const [rows] = await insertEstoque(
       material,
       fabricante,
@@ -116,7 +121,8 @@ router.post('/', async function (req, res) {
       localizacao,
       responsavel_retirada,
       info,
-      em_estoque
+      em_estoque,
+      quantidade
     );
     const id = JSON.stringify(rows.insertId);
     res.send(id);
@@ -151,6 +157,7 @@ router.post('/:id', async (req, res) => {
     const responsavel_retirada = req.body.responsavel_retirada;
     const info = req.body.info;
     const em_estoque = parseInt(req.body.em_estoque);
+    const quantidade = req.body.quantidade;
     const rows = await updateEstoque(
       material,
       fabricante,
@@ -163,6 +170,7 @@ router.post('/:id', async (req, res) => {
       responsavel_retirada,
       info,
       em_estoque,
+      quantidade,
       id
     );
     res.send(rows);
