@@ -91,3 +91,29 @@ router.get('/', async function (req, res) {
 });
 
 export default router;
+
+// const getData = () => {
+//   const conn = await connect();
+//   const [contrato] = await conn.query('SELECT * FROM contrato');
+//   const [departamento] = await conn.query('SELECT * FROM departamento');
+//   const [estoque] = await conn.query('SELECT * FROM estoque');
+//   const [material] = await conn.query('SELECT * FROM material');
+//   const [matServ] = await conn.query('SELECT * FROM mat_serv');
+//   const [servico] = await conn.query('SELECT * FROM servico');
+//   const [setor] = await conn.query('SELECT * FROM setor');
+//   const [unidade] = await conn.query('SELECT * FROM unidade');
+//   const [vigencia] = await conn.query('SELECT * FROM vigencia');
+//   const rows = {
+//     contrato,
+//     departamento,
+//     estoque,
+//     material,
+//     matServ,
+//     servico,
+//     setor,
+//     unidade,
+//     vigencia,
+//     fullServices,
+//   };
+//   return rows
+// }
