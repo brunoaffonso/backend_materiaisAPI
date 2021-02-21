@@ -10,7 +10,7 @@ async function insertUnidade(name) {
   return await conn.query(sql, values);
 }
 
-async function selectUnidade() {
+export async function selectUnidade() {
   const conn = await connect();
   const [rows] = await conn.query('SELECT * FROM unidade');
   return rows;

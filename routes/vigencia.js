@@ -18,7 +18,7 @@ async function insertVigencia(
   return await conn.query(sql, values);
 }
 
-async function selectVigencia() {
+export async function selectVigencia() {
   const conn = await connect();
   const [rows] = await conn.query('SELECT * FROM vigencia');
   return rows;

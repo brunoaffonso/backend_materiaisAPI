@@ -11,7 +11,7 @@ async function insertMatServ(numero_rs, material, quantidade, comentarios) {
   return await conn.query(sql, values);
 }
 
-async function selectMatServ() {
+export async function selectMatServ() {
   const conn = await connect();
   const [rows] = await conn.query('SELECT * FROM mat_serv');
   return rows;

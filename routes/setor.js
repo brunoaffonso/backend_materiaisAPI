@@ -10,7 +10,7 @@ async function insertSetor(name, departamento) {
   return await conn.query(sql, values);
 }
 
-async function selectSetor() {
+export async function selectSetor() {
   const conn = await connect();
   const [rows] = await conn.query('SELECT * FROM setor');
   return rows;

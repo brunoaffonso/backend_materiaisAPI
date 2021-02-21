@@ -1,5 +1,6 @@
 import express from 'express';
 import { connect } from '../db.js';
+import { getFullServices } from './data.js';
 
 const router = express.Router();
 
@@ -31,7 +32,7 @@ async function insertServico(
   return await conn.query(sql, values);
 }
 
-async function selectServico() {
+export async function selectServico() {
   const conn = await connect();
   const [rows] = await conn.query('SELECT * FROM servico');
   return rows;
@@ -77,6 +78,16 @@ async function updateServico(
 router.get('/', async function (req, res) {
   try {
     const rows = await selectServico();
+    res.send(rows);
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
+});
+
+router.get('/data', async function (req, res) {
+  try {
+    const rows = await getFullServices();
     res.send(rows);
   } catch (err) {
     console.log(err);

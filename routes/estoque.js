@@ -37,7 +37,7 @@ async function insertEstoque(
   return await conn.query(sql, values);
 }
 
-async function selectEstoque() {
+export async function selectEstoque() {
   const conn = await connect();
   const [rows] = await conn.query('SELECT * FROM estoque');
   return rows;

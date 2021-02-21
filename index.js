@@ -9,6 +9,7 @@ import materialRouter from './routes/material.js';
 import estoqueRouter from './routes/estoque.js';
 import servicoRouter from './routes/servico.js';
 import matservRouter from './routes/matServ.js';
+import dataRouter from './routes/data.js';
 
 // import * as db from './db';
 
@@ -26,6 +27,7 @@ app.use('/material', materialRouter);
 app.use('/estoque', estoqueRouter);
 app.use('/servico', servicoRouter);
 app.use('/matserv', matservRouter);
+app.use('/data', dataRouter);
 
 app.listen(port, () => {
   console.log('API Started.');

@@ -11,7 +11,7 @@ async function insertContrato(numero, inicio, processo, descricao) {
   return await conn.query(sql, values);
 }
 
-async function selectContrato() {
+export async function selectContrato() {
   const conn = await connect();
   const [rows] = await conn.query('SELECT * FROM contrato');
   return rows;

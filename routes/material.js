@@ -25,7 +25,7 @@ async function insertMaterial(
   return await conn.query(sql, values);
 }
 
-async function selectMaterial() {
+export async function selectMaterial() {
   const conn = await connect();
   const [rows] = await conn.query('SELECT * FROM material');
   return rows;
