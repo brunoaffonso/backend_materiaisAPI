@@ -13,8 +13,14 @@ async function insertMatServ(numero_rs, material, quantidade, comentarios) {
 
 export async function selectMatServ() {
   const conn = await connect();
-  const [rows] = await conn.query('SELECT * FROM mat_serv');
-  return rows;
+  try {
+    const [rows] = await conn.query('SELECT * FROM mat_serv');
+    return rows;
+  } catch (error) {
+    console.log(error);
+    const rows = [];
+    return rows;
+  }
 }
 
 async function deleteMatServ(id) {

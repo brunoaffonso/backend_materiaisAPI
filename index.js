@@ -10,6 +10,7 @@ import estoqueRouter from './routes/estoque.js';
 import servicoRouter from './routes/servico.js';
 import matservRouter from './routes/matServ.js';
 import dataRouter from './routes/data.js';
+import userRouter from './routes/user.js';
 
 // import * as db from './db';
 
@@ -28,6 +29,7 @@ app.use('/estoque', estoqueRouter);
 app.use('/servico', servicoRouter);
 app.use('/matserv', matservRouter);
 app.use('/data', dataRouter);
+app.use('/user', userRouter);
 
 app.listen(port, () => {
   console.log('API Started.');

@@ -1,6 +1,6 @@
 import express from 'express';
 import { connect } from '../db.js';
-import { getFullServices } from './data.js';
+import { getData } from './data.js';
 
 const router = express.Router();
 
@@ -34,8 +34,14 @@ async function insertServico(
 
 export async function selectServico() {
   const conn = await connect();
-  const [rows] = await conn.query('SELECT * FROM servico');
-  return rows;
+  try {
+    const [rows] = await conn.query('SELECT * FROM servico');
+    return rows;
+  } catch (error) {
+    console.log(error);
+    const rows = [];
+    return rows;
+  }
 }
 
 async function deleteServico(id) {
@@ -87,8 +93,8 @@ router.get('/', async function (req, res) {
 
 router.get('/data', async function (req, res) {
   try {
-    const rows = await getFullServices();
-    res.send(rows);
+    const rows = await getData();
+    res.send(rows.fullServices);
   } catch (err) {
     console.log(err);
     res.send(err);

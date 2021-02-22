@@ -12,8 +12,14 @@ async function insertDepartamento(name, unidade) {
 
 export async function selectDepartamento() {
   const conn = await connect();
-  const [rows] = await conn.query('SELECT * FROM departamento');
-  return rows;
+  try {
+    const [rows] = await conn.query('SELECT * FROM departamento');
+    return rows;
+  } catch (error) {
+    console.log(error);
+    const rows = [];
+    return rows;
+  }
 }
 
 async function deleteDepartamento(id) {

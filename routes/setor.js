@@ -12,8 +12,14 @@ async function insertSetor(name, departamento) {
 
 export async function selectSetor() {
   const conn = await connect();
-  const [rows] = await conn.query('SELECT * FROM setor');
-  return rows;
+  try {
+    const [rows] = await conn.query('SELECT * FROM setor');
+    return rows;
+  } catch (error) {
+    console.log(error);
+    const rows = [];
+    return rows;
+  }
 }
 
 async function deleteSetor(id) {

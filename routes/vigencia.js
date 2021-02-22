@@ -20,8 +20,14 @@ async function insertVigencia(
 
 export async function selectVigencia() {
   const conn = await connect();
-  const [rows] = await conn.query('SELECT * FROM vigencia');
-  return rows;
+  try {
+    const [rows] = await conn.query('SELECT * FROM vigencia');
+    return rows;
+  } catch (error) {
+    console.log(error);
+    const rows = [];
+    return rows;
+  }
 }
 
 async function deleteVigencia(id) {

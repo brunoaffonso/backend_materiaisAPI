@@ -27,8 +27,14 @@ async function insertMaterial(
 
 export async function selectMaterial() {
   const conn = await connect();
-  const [rows] = await conn.query('SELECT * FROM material');
-  return rows;
+  try {
+    const [rows] = await conn.query('SELECT * FROM material');
+    return rows;
+  } catch (error) {
+    console.log(error);
+    const rows = [];
+    return rows;
+  }
 }
 
 async function deleteMaterial(id) {

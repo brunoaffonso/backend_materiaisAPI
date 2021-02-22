@@ -39,8 +39,14 @@ async function insertEstoque(
 
 export async function selectEstoque() {
   const conn = await connect();
-  const [rows] = await conn.query('SELECT * FROM estoque');
-  return rows;
+  try {
+    const [rows] = await conn.query('SELECT * FROM estoque');
+    return rows;
+  } catch (error) {
+    console.log(error);
+    const rows = [];
+    return rows;
+  }
 }
 
 async function deleteEstoque(id) {

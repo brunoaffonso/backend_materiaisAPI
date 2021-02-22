@@ -12,8 +12,14 @@ async function insertUnidade(name) {
 
 export async function selectUnidade() {
   const conn = await connect();
-  const [rows] = await conn.query('SELECT * FROM unidade');
-  return rows;
+  try {
+    const [rows] = await conn.query('SELECT * FROM unidade');
+    return rows;
+  } catch (error) {
+    console.log(error);
+    const rows = [];
+    return rows;
+  }
 }
 
 async function updateUnidade(id, name) {

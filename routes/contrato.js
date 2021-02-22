@@ -8,13 +8,20 @@ async function insertContrato(numero, inicio, processo, descricao) {
   const sql =
     'INSERT INTO contrato(numero, inicio, processo, descricao) VALUES (?,?,?,?);';
   const values = [numero, inicio, processo, descricao];
-  return await conn.query(sql, values);
+  const res = await conn.query(sql, values);
+  return res;
 }
 
 export async function selectContrato() {
   const conn = await connect();
-  const [rows] = await conn.query('SELECT * FROM contrato');
-  return rows;
+  try {
+    const [rows] = await conn.query('SELECT * FROM contrato');
+    return rows;
+  } catch (error) {
+    console.log(error);
+    const rows = [];
+    return rows;
+  }
 }
 
 async function deleteContrato(id) {
