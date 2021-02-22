@@ -1,4 +1,5 @@
 import express from 'express';
+import bcrypt from 'bcryptjs';
 import { connect } from '../db.js';
 
 const router = express.Router();
@@ -45,10 +46,20 @@ async function deleteUser(id) {
 }
 
 router.post('/authenticate', async function (req, res) {
-  const users = usersList();
+  const users = await selectUser();
   const { email, password } = req.body;
 
-  const user = await usersList.findOne({ email }).select('+password');
+  const [user] = await users.filter((u) => u.email === email);
+
+  const match = await bcrypt.compare(password, user.password);
+
+  if (match) {
+    console.log('Ok');
+  } else {
+    console.log('Errou');
+  }
+
+  res.send(match);
 });
 
 router.post('/register', async function (req, res) {
@@ -57,7 +68,8 @@ router.post('/register', async function (req, res) {
     const last_name = req.body.last_name;
     const email = req.body.email;
     const password = req.body.password;
-    const [rows] = await insertUser(first_name, last_name, email, password);
+    const hash = await bcrypt.hash(password, 10);
+    const [rows] = await insertUser(first_name, last_name, email, hash);
     const id = JSON.stringify(rows.insertId);
     res.send(id);
   } catch (err) {
