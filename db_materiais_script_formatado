@@ -8,7 +8,6 @@ CREATE TABLE IF NOT EXISTS `unidade` (
   `name` VARCHAR(30) NOT NULL,
   PRIMARY KEY (`id_unidade`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 43
 DEFAULT CHARACTER SET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `departamento` (
@@ -23,7 +22,6 @@ CREATE TABLE IF NOT EXISTS `departamento` (
     ON DELETE RESTRICT
     ON UPDATE RESTRICT)
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `setor` (
@@ -38,21 +36,34 @@ CREATE TABLE IF NOT EXISTS `setor` (
     ON DELETE RESTRICT
     ON UPDATE RESTRICT)
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `contrato` (
   `id_contrato` INT NOT NULL AUTO_INCREMENT,
   `numero` INT NOT NULL,
-  `ano` INT NOT NULL,
+  `inicio` DATE NOT NULL,
+  `processo` VARCHAR(100) NOT NULL,
+  `descricao` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id_contrato`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `vigencia` (
+  `id_vigencia` INT NOT NULL AUTO_INCREMENT,
+  `contrato` INT NOT NULL,
   `renovacao` VARCHAR(1) NOT NULL,
   `inicio` DATE NOT NULL,
   `fim` DATE NOT NULL,
   `bdi` DECIMAL(6,2) NOT NULL,
   `descricao` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`id_contrato`))
+  PRIMARY KEY (`id_vigencia`),
+  INDEX `vigencia_ibfk_1` (`contrato` ASC),
+  CONSTRAINT `vigencia_ibfk_1`
+    FOREIGN KEY (`contrato`)
+    REFERENCES `contrato` (`id_contrato`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `material` (
@@ -78,6 +89,7 @@ CREATE TABLE IF NOT EXISTS `estoque` (
   `data_saida` DATETIME NULL DEFAULT NULL,
   `localizacao` VARCHAR(100) NOT NULL,
   `responsavel_retirada` VARCHAR(50) NOT NULL,
+  `quantidade` INT NULL DEFAULT NULL,
   `info` VARCHAR(255) NOT NULL,
   `em_estoque` TINYINT NOT NULL,
   PRIMARY KEY (`id_estoque`),
@@ -134,3 +146,13 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+
+
+##Config Docker:
+
+#docker run -p 3306:3306 --name materiais-api-backend-mysql -e MYSQL_ROOT_PASSWORD=12345 -e MYSQL_DATABASE=db_materiais -d mysql:latest
+
+#docker container exec -it nodejs-mysql bash
+
+#mysql -u root -p
