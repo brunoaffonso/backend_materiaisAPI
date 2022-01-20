@@ -10,10 +10,14 @@ async function connectDb() {
 }
 
 export async function connect() {
-  if (global.connection && global.connection.state !== 'disconnected') {
+  if (global.connection && connection.connection._fatalError === null) {
+    console.log(connection.connection._fatalError);
     console.log('OK');
     // return connectDb();
     return global.connection;
+  } else {
+    await connectDb();
+    connect();
   }
 
   console.log('Connected');
