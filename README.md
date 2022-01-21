@@ -6,7 +6,9 @@
 This project is a simple API, builded in NodeJs, to serve a [React  aplication](https://github.com/brunoaffonso/dashboardDae_materialUI). This API just receive requests, consult database and show results (response) in JSON format.
 
 ## Project in Action
-Endpoints:
+This project is hosted in Oracle Cloud Infraestructure instance.
+
+**Endpoints:**
 * [unidade](http://brunoaffonso.com/backendapi/unidade)
 * [departamento](http://brunoaffonso.com/backendapi/departamento)
 * [setor](http://brunoaffonso.com/backendapi/setor)
@@ -56,11 +58,13 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o 
 sudo echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 ```
 `sudo apt-get update`
+
 `sudo apt-get install docker-ce docker-ce-cli containerd.io`
 ```
 docker run -p 3306:3306 --name backend-api-mysql -v containervolume:/container -e MYSQL_ROOT_PASSWORD=[PASSWORD] -e MYSQL_DATABASE=db_materiais -d mysql:latest
 ```
 `docker container exec -it backend-api-mysql bash`
+
 `mysql -u root -p`
 
 After creating the container, follow the commands to create the database structure.
@@ -97,6 +101,7 @@ ssh server_ip
 
 ### Iptables rule
 `sudo iptables -I INPUT 1 -p tcp --dport 3001 -j ACCEPT`
+
 `sudo iptables-save > /etc/sysconfig/iptables`
 
 ## Project pendences
@@ -111,4 +116,5 @@ ssh server_ip
 
 ## License
 ![Badge em Desenvolvimento](https://img.shields.io/badge/Licence-MIT-green)
+
 **Project developed for learning purposes.**
