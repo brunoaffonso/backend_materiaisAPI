@@ -5,20 +5,6 @@
 ## Description
 This project is a simple API, builded in NodeJs, to serve a [React  aplication](https://github.com/brunoaffonso/dashboardDae_materialUI). This API just receive requests, consult database and show results (response) in JSON format.
 
-## Project in Action
-This project is hosted in Oracle Cloud Infraestructure instance.
-
-**Endpoints:**
-* [unidade](http://brunoaffonso.com/backendapi/unidade)
-* [departamento](http://brunoaffonso.com/backendapi/departamento)
-* [setor](http://brunoaffonso.com/backendapi/setor)
-* [contrato](http://brunoaffonso.com/backendapi/contrato)
-* [vigencia](http://brunoaffonso.com/backendapi/vigencia)
-* [material](http://brunoaffonso.com/backendapi/material)
-* [estoque](http://brunoaffonso.com/backendapi/estoque)
-* [servico](http://brunoaffonso.com/backendapi/servico)
-* [matserv](http://brunoaffonso.com/backendapi/matserv)
-
 ## Installation
 Building and running the project in your local dev environment is very easy. Be sure you have [Git](https://git-scm.com/downloads) and [Node.js](https://nodejs.org/) installed, then follow the directions below.
 
